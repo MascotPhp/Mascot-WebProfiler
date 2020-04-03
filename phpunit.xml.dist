@@ -14,8 +14,8 @@
     </php>
 
     <testsuites>
-        <testsuite name="Silex WebProfiler Test Suite">
-            <directory>./Tests/</directory>
+        <testsuite name="Mascot WebProfiler Test Suite">
+            <directory>./tests/Tests/</directory>
         </testsuite>
     </testsuites>
 
@@ -23,7 +23,7 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./Tests</directory>
+                <directory>./tests/Tests/</directory>
             </exclude>
         </whitelist>
     </filter>

@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Provider;
+namespace Mascot\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Api\ControllerProviderInterface;
-use Silex\Api\BootableProviderInterface;
-use Silex\Api\EventListenerProviderInterface;
-use Silex\Application;
-use Silex\ServiceControllerResolver;
+use Mascot\Api\ControllerProviderInterface;
+use Mascot\Api\BootableProviderInterface;
+use Mascot\Api\EventListenerProviderInterface;
+use Mascot\Application;
+use Mascot\ServiceControllerResolver;
 use Symfony\Bridge\Twig\DataCollector\TwigDataCollector;
 use Symfony\Bridge\Twig\Extension\CodeExtension;
 use Symfony\Bridge\Twig\Extension\ProfilerExtension;
@@ -32,6 +32,7 @@ use Symfony\Component\Form\Extension\DataCollector\FormDataCollector;
 use Symfony\Component\Form\Extension\DataCollector\FormDataExtractor;
 use Symfony\Component\Form\Extension\DataCollector\Proxy\ResolvedTypeFactoryDataCollectorProxy;
 use Symfony\Component\Form\Extension\DataCollector\Type\DataCollectorTypeExtension;
+use Symfony\Component\HttpKernel\Controller\ErrorController;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\HttpKernel\EventListener\DumpListener;
@@ -55,6 +56,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Translation\DataCollector\TranslationDataCollector;
 use Symfony\Component\Translation\DataCollectorTranslator;
 use Symfony\Component\Yaml\Yaml;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\Profiler\Profile as TwigProfile;
 
 /**
  * Symfony Web Profiler provider.
@@ -103,7 +107,7 @@ class WebProfilerServiceProvider implements ServiceProviderInterface, Controller
 
         $app['data_collectors'] = function ($app) {
             return array(
-                'config' => function ($app) { return new ConfigDataCollector('Silex', Application::VERSION); },
+                'config' => function ($app) { return new ConfigDataCollector(); },
                 'request' => function ($app) { return new RequestDataCollector(); },
                 'exception' => function ($app) { return new ExceptionDataCollector(); },
                 'events' => function ($app) { return new EventDataCollector($app['dispatcher']); },
@@ -145,7 +149,7 @@ class WebProfilerServiceProvider implements ServiceProviderInterface, Controller
             });
 
             $app['twig.profiler.profile'] = function () {
-                return new \Twig_Profiler_Profile();
+                return new TwigProfile();
             };
         }
 
@@ -210,11 +214,11 @@ class WebProfilerServiceProvider implements ServiceProviderInterface, Controller
             };
 
             $app['twig'] = $app->extend('twig', function ($twig, $app) {
-                $twig->addFilter(new \Twig_SimpleFilter('yaml_encode', function (array $var) {
+                $twig->addFilter(new TwigFilter('yaml_encode', function (array $var) {
                     return Yaml::dump($var);
                 }));
 
-                $twig->addFunction(new \Twig_SimpleFunction('yaml_encode', function (array $var) {
+                $twig->addFunction(new TwigFunction('yaml_encode', function (array $var) {
                     return Yaml::dump($var);
                 }));
 
@@ -237,7 +241,7 @@ class WebProfilerServiceProvider implements ServiceProviderInterface, Controller
         }
 
         $app['web_profiler.controller.profiler'] = function ($app) use ($baseDir) {
-            return new ProfilerController($app['url_generator'], $app['profiler'], $app['twig'], $app['data_collector.templates'], $app['web_profiler.debug_toolbar.position'], null, $baseDir);
+            return new ProfilerController($app['url_generator'], $app['profiler'], $app['twig'], $app['data_collector.templates'], null, $baseDir);
         };
 
         $app['web_profiler.controller.router'] = function ($app) {
@@ -251,7 +255,7 @@ class WebProfilerServiceProvider implements ServiceProviderInterface, Controller
         $app['web_profiler.toolbar.listener'] = function ($app) {
             $mode = $app['web_profiler.debug_toolbar.enable'] ? WebDebugToolbarListener::ENABLED : WebDebugToolbarListener::DISABLED;
 
-            return new WebDebugToolbarListener($app['twig'], $app['web_profiler.debug_toolbar.intercept_redirects'], $mode, $app['web_profiler.debug_toolbar.position'], $app['url_generator']);
+            return new WebDebugToolbarListener($app['twig'], $app['web_profiler.debug_toolbar.intercept_redirects'], $mode, $app['url_generator']);
         };
 
         $app['profiler'] = function ($app) {
@@ -324,9 +328,9 @@ class WebProfilerServiceProvider implements ServiceProviderInterface, Controller
         };
 
         $app['profiler.templates_path.twig'] = function () {
-            $r = new \ReflectionClass('Symfony\Bundle\TwigBundle\Controller\ExceptionController');
+            $r = new \ReflectionClass('Symfony\Bundle\TwigBundle\TwigBundle');
 
-            return dirname(dirname($r->getFileName())).'/Resources/views';
+            return dirname($r->getFileName()).'/Resources/views';
         };
 
         $app['profiler.templates_path.debug'] = function () {
