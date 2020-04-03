@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "mascot/mascot": "1.0.x@dev",
+        "mascot/mascot": "^1.0",
         "symfony/web-profiler-bundle": "^4.4",
         "symfony/twig-bundle": "^4.4",
         "symfony/twig-bridge": "^4.4",
