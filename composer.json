@@ -1,39 +1,35 @@
 {
-    "name": "silex/web-profiler",
-    "description": "A WebProfiler for Silex",
-    "homepage": "http://silex.sensiolabs.org/",
+    "name": "mascot/web-profiler",
+    "description": "A WebProfiler for Mascot",
+    "homepage": "https://mascot.rocks/",
     "license": "MIT",
     "authors": [
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com"
+        },
+        {
+            "name": "Hari KT",
+            "email": "me@harikt.com"
         }
     ],
     "require": {
-        "silex/silex": "^2.0",
-        "symfony/web-profiler-bundle": "^2.8|^3.0",
-        "symfony/twig-bundle": "^2.8|^3.0",
-        "symfony/twig-bridge": "^2.8|^3.0",
-        "symfony/stopwatch": "^2.8|^3.0"
-    },
-    "conflict": {
-        "symfony/web-profiler-bundle": "3.1.0"
+        "mascot/mascot": "1.0.x@dev",
+        "symfony/web-profiler-bundle": "^4.4",
+        "symfony/twig-bundle": "^4.4",
+        "symfony/twig-bridge": "^4.4",
+        "symfony/stopwatch": "^4.4"
     },
     "require-dev": {
-        "symfony/browser-kit": "^2.8|^3.0",
-        "symfony/css-selector": "^2.8|^3.0",
-        "symfony/debug-bundle": "^2.8|^3.0",
+        "symfony/browser-kit": "^4.4",
+        "symfony/css-selector": "^4.4",
+        "symfony/debug-bundle": "^4.4",
         "symfony/phpunit-bridge": "~3.2",
-        "symfony/security": "^2.8|^3.0",
-        "symfony/security-bundle": "^2.8|^3.0",
-        "symfony/translation": "^2.8|^3.0"
+        "symfony/security": "^4.4",
+        "symfony/security-bundle": "^4.4",
+        "symfony/translation": "^4.4"
     },
     "autoload": {
-        "psr-4": { "Silex\\Provider\\": "" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0.x-dev"
-        }
+        "psr-4": { "Mascot\\Provider\\": "src/" }
     }
 }

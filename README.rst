@@ -1,29 +1,21 @@
 Silex Web Profiler
 ==================
 
-**WARNING**: Silex is in maintenance mode only. Ends of life is set to June
-2018. Read more on `Symfony's blog <http://symfony.com/blog/the-end-of-silex>`_.
-
-The Silex Web Profiler service provider allows you to use the wonderful Symfony
-web debug toolbar and the Symfony profiler in your Silex 2.x application.
-
-.. note::
-
-    If you are using the 1.x Silex version, read the `specific documentation
-    <https://github.com/silexphp/Silex-WebProfiler/tree/1.0>`_.
+The Mascot Web Profiler service provider allows you to use the wonderful
+Symfony web debug toolbar and the Symfony profiler in your Mascot application.
 
 To install this library, run the command below and you will get the latest
 version:
 
 .. code-block:: bash
 
-    composer require 'silex/web-profiler:^2.0'
+    composer require 'mascot/web-profiler:^0.1'
 
 And enable it in your application:
 
 .. code-block:: php
 
-    use Silex\Provider;
+    use Mascot\Provider;
 
     $app->register(new Provider\WebProfilerServiceProvider(), array(
         'profiler.cache_dir' => __DIR__.'/../cache/profiler',

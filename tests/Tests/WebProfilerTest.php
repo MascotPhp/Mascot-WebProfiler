@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Provider\Tests;
+namespace Mascot\Provider\Tests;
 
-use Silex\Application;
-use Silex\WebTestCase;
-use Silex\Provider;
+use Mascot\Application;
+use Mascot\WebTestCase;
+use Mascot\Provider;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 
 class WebProfilerTest extends WebTestCase
@@ -125,6 +125,6 @@ class WebProfilerTest extends WebTestCase
         $crawler = $client->click($crawler->selectLink('Security')->link());
         $this->assertTrue($client->getResponse()->isOk(), 'Security profiler is enabled');
         $this->assertCount(1, $crawler->filter('h2:contains("Security Token")'), 'Security profiler is working');
-        $this->assertCount(1, $crawler->filter('span:contains("Anonymous")'), 'Profiler gets anonymous token');
+        $this->assertCount(1, $crawler->filter('div .metric > span:contains("Anonymous")'), 'Profiler gets anonymous token');
     }
 }
